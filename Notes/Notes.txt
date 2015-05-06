@@ -1,0 +1,19 @@
+Unity5 now comes with a default skybox, which would look like shit in a space shooter game.  
+Figured out how to remove it here: http://answers.unity3d.com/questions/949154/unity-5-render-settings-please-help.html#answer-949163
+
+
+Adding colliders to rigid bodies is essential to detect collisions.  The box, sphere, and capsule colliders should be used wherever possible, as they are more performant than the more complex colliders.  
+	-In the space shooter example, a simplified mesh collider was provided for the spaceship that was composed of only a few triangles (but fit better than the capsule collider did)
+	-When I added the simple mesh collider for the spaceship, it didn’t show up like in the tutorial unless I checked ‘convex’…
+
+
+Gizmo size can be adjusted (as was the case with the giant engine particle emitters)
+
+There is ambient light in every default scene, which is why you can still kinda see stuff with no lights.  Turn that off in Window -> lighting -> ambientLightSettings
+
+On the lesson before: https://www.youtube.com/watch?v=ds9xhYHndXI I “learned” about lighting
+Main lighting (which is due to the predictable light source), Fill lighting, which is just to 
+fill in dark shadows where appropriate, and Rim lighting, which I’m not quite sure what it’s purpose is.  I didn’t do all the lighting shit…
+	-Directional lights light the entire scene but based on their rotation, so they can be placed anywhere within the scene.
+	-Organizing lights within an empty Lighting game object was a good idea
+
