@@ -9,13 +9,33 @@ public class Boundary
 
 public class PlayerController : MonoBehaviour
 {
+	//player crap
 	public float speed;
 	public float tilt;
 	public Boundary boundary;
 	private Rigidbody rb;
 
-	void Start() {
+	//laser crap
+	public GameObject shot;
+	public Transform shotSpawn;
+	public float fireRate = 0.5F;
+	private float nextFire = 0.0F;
+
+	void Start (){
 		rb = GetComponent<Rigidbody>();
+	}
+
+
+
+	void Update() {
+
+		//only shoot if mouse is clicked + throttle by fire-rate
+		if (Input.GetButton("Fire1") && Time.time > nextFire) {
+			nextFire = Time.time + fireRate;
+
+			//GameObject clone = xxx as GameObject;
+			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+		}
 	}
 
 	void FixedUpdate ()
@@ -24,9 +44,9 @@ public class PlayerController : MonoBehaviour
 		float moveVertical = Input.GetAxis ("Vertical");
 		
 		Vector3 movement = new Vector3 (moveHorizontal, 0.0f, moveVertical);
-		Debug.Log ("movement is: " + movement);
+
 		rb.velocity = movement * speed;
-		Debug.Log ("Velocity is: " + rb.velocity.ToString ());
+
 		rb.position = new Vector3 (
 			Mathf.Clamp (rb.position.x, boundary.xMin, boundary.xMax), 
 			0.0f, 
