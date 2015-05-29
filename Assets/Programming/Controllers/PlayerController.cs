@@ -18,23 +18,26 @@ public class PlayerController : MonoBehaviour
 	//laser crap
 	public GameObject shot;
 	public Transform shotSpawn;
-	public float fireRate = 0.5F;
-	private float nextFire = 0.0F;
+	public float fireRate;
+	private float nextFire = 0.0f; //used to keep lazer state
 
 	void Start (){
 		rb = GetComponent<Rigidbody>();
 	}
-
-
-
+	
 	void Update() {
 
 		//only shoot if mouse is clicked + throttle by fire-rate
 		if (Input.GetButton("Fire1") && Time.time > nextFire) {
 			nextFire = Time.time + fireRate;
 
-			//GameObject clone = xxx as GameObject;
-			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+			GameObject projectile = (GameObject) Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+			Rigidbody projectileRB =  projectile.GetComponent<Rigidbody>();
+			Debug.Log (projectileRB);
+			Vector3	randomDirection = Random.insideUnitSphere;
+			float randomSpeed = Random.Range (0, 100);
+
+			projectileRB.velocity = (randomDirection * randomSpeed);
 		}
 	}
 
