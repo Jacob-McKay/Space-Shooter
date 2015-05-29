@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 	public GameObject shot;
 	public Transform shotSpawn;
 	public float fireRate;
+	public int shotsPerFire;
 	private float nextFire = 0.0f; //used to keep lazer state
 
 	void Start (){
@@ -28,16 +29,28 @@ public class PlayerController : MonoBehaviour
 	void Update() {
 
 		//only shoot if mouse is clicked + throttle by fire-rate
-		if (Input.GetButton("Fire1") && Time.time > nextFire) {
+		if (Input.GetButton("Fire1") && weCanShootAgain()) {
+
+			//we can fire again after <fireRate> seconds from now <Time.time>
 			nextFire = Time.time + fireRate;
 
-			GameObject projectile = (GameObject) Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
-			Rigidbody projectileRB =  projectile.GetComponent<Rigidbody>();
-			Debug.Log (projectileRB);
-			Vector3	randomDirection = Random.insideUnitSphere;
-			float randomSpeed = Random.Range (0, 100);
+			//before I started messing around, we'd just instantiate the bolt
+			//Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+			//and let the mover script attached to the prefab do the shooting
 
-			projectileRB.velocity = (randomDirection * randomSpeed);
+
+			//but since I'm an idiot, I'm gonna spawn a crap-ton of shots in random directions :D
+			for(int i = 0; i < shotsPerFire; i++){
+
+				GameObject projectile = (GameObject) Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
+				Rigidbody projectileRB =  projectile.GetComponent<Rigidbody>();
+		
+				Vector3	randomDirection = Random.insideUnitSphere;
+				float randomSpeed = Random.Range (0, 100);
+
+				//since this is a pseudo 2D game, randomness in the Y direction is silly, so zero it out
+				projectileRB.velocity = new Vector3(randomDirection.x, 0, randomDirection.z) * randomSpeed;
+			}
 		}
 	}
 
@@ -57,5 +70,9 @@ public class PlayerController : MonoBehaviour
 		);
 		
 		rb.rotation = Quaternion.Euler (0.0f, 0.0f, rb.velocity.x * -tilt);
+	}
+
+	bool weCanShootAgain(){
+		return Time.time > nextFire;
 	}
 }
