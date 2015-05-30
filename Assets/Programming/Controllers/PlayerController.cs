@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
 	public Transform shotSpawn;
 	public float fireRate;
 	public int shotsPerFire;
+	public int minProjectileSpeed;
+	public int maxProjectileSpeed;
 	private float nextFire = 0.0f; //used to keep lazer state
 
 	void Start (){
@@ -46,7 +48,13 @@ public class PlayerController : MonoBehaviour
 				Rigidbody projectileRB =  projectile.GetComponent<Rigidbody>();
 		
 				Vector3	randomDirection = Random.insideUnitSphere;
-				float randomSpeed = Random.Range (0, 100);
+				float randomSpeed = Random.Range (minProjectileSpeed, maxProjectileSpeed);
+				Debug.Log ("RandomSpeed was: " + randomSpeed);
+
+				//orient projectile so that it doesn't fly sideways/awkwardly
+				Transform projTranny = projectile.transform;
+				Vector3 directionFromProjectile = new Vector3(projTranny.position.x + randomDirection.x, projTranny.position.y, projTranny.position.z + randomDirection.z);
+				projTranny.LookAt(directionFromProjectile);
 
 				//since this is a pseudo 2D game, randomness in the Y direction is silly, so zero it out
 				projectileRB.velocity = new Vector3(randomDirection.x, 0, randomDirection.z) * randomSpeed;
