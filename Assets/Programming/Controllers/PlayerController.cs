@@ -15,14 +15,17 @@ public class PlayerController : MonoBehaviour
 	public Boundary boundary;
 	private Rigidbody rb;
 
+
 	//laser crap
 	public GameObject shot;
 	public Transform shotSpawn;
 	public float fireRate;
 	private float nextFire = 0.0f; //used to keep lazer state
+	private AudioSource shotAudio;
 
 	void Start (){
 		rb = GetComponent<Rigidbody>();
+		shotAudio = GetComponent<AudioSource> ();
 	}
 	
 	void Update() {
@@ -36,6 +39,9 @@ public class PlayerController : MonoBehaviour
 			//just instantiate the bolt
 			Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
 			//and let the mover script attached to the prefab adjust the shot's velocity
+
+			//make some noiiise y'alllll BANG BANG!!
+			shotAudio.Play();
 		}
 	}
 

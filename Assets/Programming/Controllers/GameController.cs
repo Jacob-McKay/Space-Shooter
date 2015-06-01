@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -9,9 +10,23 @@ public class GameController : MonoBehaviour
 	public float spawnWait;
 	public float startWait;
 	public float waveWait;
-	
+	public Text scoreText;
+		
+	public AudioClip recordScratch;
+
+	private int score;
+	private AudioSource backgroundMusicSource;
+
 	void Start ()
 	{
+		//get a handle to the background music player
+		backgroundMusicSource = GetComponent<AudioSource> ();
+		Debug.Log ("Background Music source is: " + backgroundMusicSource);
+
+		//our super slick GUI that prints the score
+		score = 0;
+		updateScoreText ();
+
 		//this code will run apart from the game Update loop
 		StartCoroutine (SpawnWaves ());
 	}
@@ -40,5 +55,39 @@ public class GameController : MonoBehaviour
 			//wait <waveWait> seconds to spawn the next wave
 			yield return new WaitForSeconds (waveWait);
 		}
+	}
+
+	/// <summary>
+	/// Adds the changeInScore value (or subtracts if it's negative) to the score
+	/// and updates the sophistocated UI
+	/// </summary>
+	/// <param name="changeInScore">Change in score.</param>
+	public void updateScore (int changeInScore)
+	{
+		score += changeInScore;
+		updateScoreText ();
+	}
+
+	private void updateScoreText()
+	{
+		scoreText.text = "Score: " + score;
+	}
+	
+	public void gameOverMan()
+	{
+		StartCoroutine (gameOverSounds ());
+	}
+
+	IEnumerator gameOverSounds()
+	{
+		backgroundMusicSource.clip = recordScratch;
+		backgroundMusicSource.loop = false;
+		backgroundMusicSource.Play ();
+		yield return new WaitForSeconds (0);
+//		yield return new WaitForSeconds(backgroundMusicSource.clip.length);
+//
+//		GameObject wahwahObject = transform.Find ("WahhWahhWahhhhhSource").gameObject;
+//		AudioSource wahwahSource = wahwahObject.GetComponent<AudioSource> ();
+//		wahwahSource.Play ();
 	}
 }

@@ -1,10 +1,16 @@
 fileFormatVersion: 2
 guid: 6d0e08fdf968541a19e716b3ff5657bf
-timeCreated: 1431991346
+timeCreated: 1433043404
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - hazard: {instanceID: 0}
+  - scoreText: {instanceID: 0}
+  - wahwahwahhhhhhh: {fileID: 8300000, guid: 499c57073b6334a2ca87943a6539acdc, type: 3}
+  - clownHorn: {fileID: 8300000, guid: b18bc218436104190854929e49e56c66, type: 3}
+  - thePriceIsWrongBitch: {fileID: 8300000, guid: 26eb3e0237e724952bdff11b3a200f3a,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

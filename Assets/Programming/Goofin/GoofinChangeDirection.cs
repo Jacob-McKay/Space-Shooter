@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ChangeDirection : MonoBehaviour {
+public class GoofinChangeDirection : MonoBehaviour {
 
 	public Vector3 randomDirection;
 	private Rigidbody rb; 
