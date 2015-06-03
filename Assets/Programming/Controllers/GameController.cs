@@ -11,24 +11,47 @@ public class GameController : MonoBehaviour
 	public float startWait;
 	public float waveWait;
 	public Text scoreText;
+	public Text restartText;
+	public Text gameOverText;
 		
-	public AudioClip recordScratch;
-
-	private int score;
 	private AudioSource backgroundMusicSource;
+	public AudioClip recordScratch;
+	public AudioClip wahhWahhhWahhhWahhhhhhhhhhhh;
+
+	private bool gameOver;
+	private bool restart;
+	private int score;
+
+
 
 	void Start ()
 	{
+		//set game state
+		gameOver = false;
+		restart = false;
+		score = 0;
+
+		//setup our super sophistocated UI
+		updateScoreText ();
+		restartText.text = "";
+		gameOverText.text = "";
+
 		//get a handle to the background music player
 		backgroundMusicSource = GetComponent<AudioSource> ();
-		Debug.Log ("Background Music source is: " + backgroundMusicSource);
-
-		//our super slick GUI that prints the score
-		score = 0;
-		updateScoreText ();
 
 		//this code will run apart from the game Update loop
 		StartCoroutine (SpawnWaves ());
+	}
+
+	void Update ()
+	{
+		if (restart) 
+		{
+			if (Input.GetKeyDown (KeyCode.R))
+			{
+				Application.LoadLevel (Application.loadedLevel);
+			}
+		}
 	}
 	
 	IEnumerator SpawnWaves ()
@@ -54,6 +77,15 @@ public class GameController : MonoBehaviour
 
 			//wait <waveWait> seconds to spawn the next wave
 			yield return new WaitForSeconds (waveWait);
+
+			if(gameOver)
+			{
+				restartText.text = "Press 'R' for Restart";
+				restart = true;
+
+				//bust us up out of this infinite while loop
+				break;
+			}
 		}
 	}
 
@@ -75,19 +107,23 @@ public class GameController : MonoBehaviour
 	
 	public void gameOverMan()
 	{
+		//update UI and state
+		gameOverText.text = "GAME OVER MAN!!!1";
+		gameOver = true;
 		StartCoroutine (gameOverSounds ());
 	}
 
 	IEnumerator gameOverSounds()
 	{
+
+		//abruptly stop our crappy techno music
 		backgroundMusicSource.clip = recordScratch;
 		backgroundMusicSource.loop = false;
 		backgroundMusicSource.Play ();
-		yield return new WaitForSeconds (0);
-//		yield return new WaitForSeconds(backgroundMusicSource.clip.length);
-//
-//		GameObject wahwahObject = transform.Find ("WahhWahhWahhhhhSource").gameObject;
-//		AudioSource wahwahSource = wahwahObject.GetComponent<AudioSource> ();
-//		wahwahSource.Play ();
+
+		//when that's over, play the sad trombone, you loser...
+		yield return new WaitForSeconds(recordScratch.length);
+		backgroundMusicSource.clip = wahhWahhhWahhhWahhhhhhhhhhhh;
+		backgroundMusicSource.Play ();
 	}
 }
