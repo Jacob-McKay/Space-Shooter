@@ -3,7 +3,7 @@ using System.Collections;
 
 public class RandomRotator : MonoBehaviour {
 	
-	public float tumble;
+	public float tumble = 4f;
 	private Rigidbody rb;
 	
 	
