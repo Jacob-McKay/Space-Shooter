@@ -4,15 +4,18 @@ using System.Collections;
 [System.Serializable]
 public class RegularBoundary
 {
-	public float xMin, xMax, zMin, zMax;
+	public float xMin = -6f;
+	public float xMax = 6f;
+	public float zMin = -3f;
+	public float zMax = 17f;
 }
 
 public class RegularPlayerMovement : MonoBehaviour {
 
 	//player stuff
-	public float speed;
-	public float tilt;
-	public Boundary boundary;
+	public float speed = 5f;
+	public float tilt = 5f;
+	public RegularBoundary boundary;
 	private Rigidbody rb;
 
 	// Use this for initialization
